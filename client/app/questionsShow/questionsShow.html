@@ -1,0 +1,44 @@
+<div class="container" id="question-show-container">
+  <div>
+    <div>
+      <button ng-if="isOwner(question)" type="button" class="close" ng-click="deleteQuestion()">&times;</button>
+      <h1>
+        <div ng-if="! editing">{{question.title}}</div>
+        <input type=text ng-model="question.title" ng-if=" editing">
+      </h1>
+      <span ng-repeat="tag in question.tags">
+        <span class="label label-info">
+          {{tag.text}}
+        </span>
+      </span>
+    </div>
+  </div>
+  <hr/>
+  <!--{{question.content}}-->
+  <pagedown-viewer content="question.content" ng-if="!editing"></pagedown-viewer>
+ <pagedown-editor ng-model="question.content" ng-if=" editing"></pagedown-editor>
+  <button type="submit" class="btn btn-primary" ng-click="editing=false;updateAnswer(answer)" ng-show=" editing">Save</button>
+  <a ng-click="editing=!editing;" ng-show="isOwner(answer) && !editing">Edit</a>
+  <div class="text-right">by {{question.user.name}} · {{question.createdAt|fromNow}}</div>
+  &nbsp;
+  <h3>{{question.answers.length}} Answers</h3>
+  <div ng-repeat="answer in question.answers">
+    <hr/>
+    <div class="answer">
+      <!--{{answer.content}}-->
+      <button ng-if="isOwner(answer)" type="button" class="close" ng-click="deleteAnswer(answer)">&times;</button>
+      <div class="text-right">by {{answer.user.name}} · {{answer.createdAt|fromNow}}</div>
+      <pagedown-viewer content="answer.content" ng-if="!editing"></pagedown-viewer>
+      <pagedown-editor ng-model="answer.content" ng-if=" editing"></pagedown-editor>
+      <button type="submit" class="btn btn-primary" ng-click="editing=false;updateAnswer(answer)" ng-show=" editing">Save</button>
+      <a ng-click="editing=!editing;" ng-show="isOwner(answer) && !editing">Edit</a>
+    </div>
+  </div>
+  <hr/>
+  <h3>Your answer</h3>
+  <form name="answerForm" ng-submit="submitAnswer()">
+    <!--<textarea rows=10 cols=80 ng-model="newAnswer.content"></textarea>-->
+    <pagedown-editor ng-model="newAnswer.content" name="answerEditor" required></pagedown-editor>
+    <input type="submit" class="btn btn-primary" ng-disabled="answerForm.$invalid" value="Submit your answer">
+  </form>
+</div>
