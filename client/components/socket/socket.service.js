@@ -26,6 +26,10 @@ angular.module('stackunderflowApp')
        * @param {Function} cb
        */
       syncUpdates(modelName, array, cb) {
+        console.log('listening', modelName);
+        console.log('array', array);
+
+
         cb = cb || angular.noop;
 
         /**

@@ -1,7 +1,7 @@
 <div class="container" id="question-show-container">
   <div>
     <div>
-      <button ng-if="isOwner(question)" type="button" class="close" ng-click="deleteQuestion()">&times;</button>
+      <button ng-if="isOwner(question)" type="button" href="../questionsIndex/questionsIndex.html" class="close" ng-click="deleteQuestion()">&times;</button>
       <h1>
         <div ng-if="! editing">{{question.title}}</div>
         <input type=text ng-model="question.title" ng-if=" editing">

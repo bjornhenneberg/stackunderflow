@@ -13,7 +13,8 @@ angular.module('stackunderflowApp', [
   'ui.pagedown',
   'ngTagsInput',
   'ngMessages',
-  'validation.match'
+  'validation.match',
+  'ngMaterial'
 ])
   .config(function($urlRouterProvider, $locationProvider) {
     $urlRouterProvider

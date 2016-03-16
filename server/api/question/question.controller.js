@@ -14,8 +14,10 @@ import Question from './question.model';
 
 function handleUnauthorized(req, res) {
   return function(entity) {
-    if (!entity) {return null;}
-    if(entity.user._id.toString() !== req.user._id.toString()){
+    if (!entity) {
+      return null;
+    }
+    if (entity.user._id.toString() !== req.user._id.toString()) {
       res.send(403).end();
       return null;
     }
@@ -72,7 +74,9 @@ function handleError(res, statusCode) {
 
 // Gets a list of Questions
 export function index(req, res) {
-  Question.find().sort({createdAt: -1}).limit(20).execAsync()
+  Question.find().sort({
+      createdAt: -1
+    }).limit(20).execAsync()
     .then(respondWithResult(res))
     .catch(handleError(res));
 }
@@ -110,33 +114,66 @@ export function update(req, res) {
 // Deletes a Question from the DB
 export function destroy(req, res) {
   Question.findByIdAsync(req.params.id)
-    .then(removeEntity(res))
     .then(handleEntityNotFound(res))
+    .then(removeEntity(res))
     .then(handleUnauthorized(req, res))
     .catch(handleError(res));
 }
 
 export function createAnswer(req, res) {
   req.body.user = req.user;
-  Question.update({_id: req.params.id}, {$push: {answers: req.body}}, function(err, num) {
-    if(err) { return handleError(res)(err); }
-    if(num === 0) { return res.send(404).end(); }
+  Question.update({
+    _id: req.params.id
+  }, {
+    $push: {
+      answers: req.body
+    }
+  }, function(err, num) {
+    if (err) {
+      return handleError(res)(err);
+    }
+    if (num === 0) {
+      return res.send(404).end();
+    }
     exports.show(req, res);
   });
 };
 
 export function destroyAnswer(req, res) {
-  Question.update({_id: req.params.id}, {$pull: {answers: {_id: req.params.answerId , 'user': req.user._id}}}, function(err, num) {
-    if(err) { return handleError(res)(err); }
-    if(num === 0) { return res.send(404).end(); }
+  Question.update({
+    _id: req.params.id
+  }, {
+    $pull: {
+      answers: {
+        _id: req.params.answerId,
+        'user': req.user._id
+      }
+    }
+  }, function(err, num) {
+    if (err) {
+      return handleError(res)(err);
+    }
+    if (num === 0) {
+      return res.send(404).end();
+    }
     exports.show(req, res);
   });
 };
 
 export function updateAnswer(req, res) {
-  Question.update({_id: req.params.id, 'answers._id': req.params.answerId}, {'answers.$.content': req.body.content, 'answers.$.user': req.user.id}, function(err, num){
-    if(err) { return handleError(res)(err); }
-    if(num === 0) { return res.send(404).end(); }
+  Question.update({
+    _id: req.params.id,
+    'answers._id': req.params.answerId
+  }, {
+    'answers.$.content': req.body.content,
+    'answers.$.user': req.user.id
+  }, function(err, num) {
+    if (err) {
+      return handleError(res)(err);
+    }
+    if (num === 0) {
+      return res.send(404).end();
+    }
     exports.show(req, res);
   });
 };

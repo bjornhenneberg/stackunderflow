@@ -25,6 +25,7 @@ for (var e in events) {
 
 function emitEvent(event) {
   return function(doc) {
+    console.log(event + ':' + doc._id);
     QuestionEvents.emit(event + ':' + doc._id, doc);
     QuestionEvents.emit(event, doc);
   }

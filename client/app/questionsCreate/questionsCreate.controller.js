@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('stackunderflowApp')
-.controller('QuestionsCreateCtrl', function ($scope, $http, $location, Auth) {
+.controller('QuestionsCreateCtrl', function ($scope, $http, $location, Auth, $state) {
     if(! Auth.isLoggedIn()){
       $location.path('/login');
       $location.replace();
@@ -9,7 +9,7 @@ angular.module('stackunderflowApp')
     }
   $scope.submit = function() {
     $http.post('/api/questions', $scope.question).success(function(){
-      $location.path('/');
+      $state.go('main');
     });
   };
 });

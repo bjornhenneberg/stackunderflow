@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('stackunderflowApp')
-.controller('QuestionsShowCtrl', function ($scope, $http, $stateParams, Auth, $location) {
+.controller('QuestionsShowCtrl', function ($scope, $http, $stateParams, Auth, $location,$state) {
   var loadQuestions = function(){
     $http.get('/api/questions/' + $stateParams.id).success(function(question) {
       $scope.question = question;
@@ -17,7 +17,8 @@ angular.module('stackunderflowApp')
     };
     $scope.deleteQuestion = function() {
       $http.delete('/api/questions/' + $stateParams.id).success(function(){
-        $location.path('/');
+        console.log();
+          $state.go('main');
       });
     };
     $scope.deleteAnswer = function(answer) {
